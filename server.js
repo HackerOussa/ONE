@@ -4,7 +4,7 @@ nodemailer=require('nodemailer'),crypto=require('crypto'),cookie=require('cookie
 const E=process.env,app=express();
 const db=mysql.createPool({host:E.DB_HOST,user:E.DB_USER,password:E.DB_PASS,database:E.DB_NAME});
 const mail=nodemailer.createTransport({host:E.SMTP_HOST,port:+E.SMTP_PORT||587,auth:{user:E.SMTP_USER,pass:E.SMTP_PASS}});
-app.use(express.json(),cookie(),express.static('public'));
+app.use(express.json(),cookie(),express.static('.'));
 app.use('/api',rate({windowMs:6e4,max:60}));
 const send=async(to,subject,text)=>{try{await mail.sendMail({from:E.SMTP_USER,to,subject,text})}catch(e){console.error('mail:',e.message)}};
 const wa=async t=>{try{await fetch(`https://api.callmebot.com/whatsapp.php?phone=${E.ADMIN_WHATSAPP}&apikey=${E.CALLMEBOT_KEY}&text=${encodeURIComponent(t)}`)}catch(e){console.error('whatsapp:',e.message)}};
